@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>iPhones</title>
+    <style>
+        #product-info img.selected {
+            width: 225px;
+            height: 265px;
+            float: left;
+            border: 1px solid lightslategrey;
+            margin: 5px;
+        }
+
+        #product-list li {
+            list-style-type: none;
+            border: 1px solid lightslategrey;
+            margin: 5px;
+            float: left;
+        }
+
+        #product-list li img {
+            width: 100px;
+            height: 100px;
+        }
+    
+        
+        #product-info {
+            /* width: 510px; */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="product-info">
+        <img id="main-image" src="images/iphone-xs.jpeg" class="selected" title="iPhones XS">
+        <h2>iPhone Xs</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.</p>
+        <h3>Products</h3>
+        <ul id="product-list">
+            <li><img class="sub-image" src="images/iphone-xs.jpeg" title="iPhone XS"></li>
+            <li><img class="sub-image" src="images/iphone-xr.jpeg" title="iPhone XR"></li>
+            <li><img class="sub-image" src="images/iphone8.jpeg" title="iPhone 8"></li>
+            <li><img class="sub-image" src="images/ipad-mini.jpeg" title="iPad Mini"></li>
+        </ul>
+        <input type="text" id="keyword" /><button id="btn-search">검색</button>
+    </div>
+</body>
+<script>
+    function testArribute() {
+        // #main-image을 찾아서 속성들을 확인
+        let obj = document.getElementById("main-image");
+        console.log("#Id가 main-image", obj);
+        // obj가 어떤 속성들을 가지고 있는가?
+        console.log(obj.getAttributeNames());
+        // title 속성을 받아와서 확인한다
+        let title = obj.getAttribute("title");
+        console.log("title:", title);
+        // title속성을 변경 -> title 속성으로 받아온다
+        obj.setAttribute("title", "제품사진:" + title);
+        // 하단의  .sub-image들의 title속성도 변경
+        let subs = document.getElementsByClassName("sub-image");
+        console.log("class가 sum-image:", subs);
+        console.log(subs.__proto__); //HTMLCollection
+        // 직접 접근 불가, loop 필요 (요소들이 1개가 아니라서 그중에서 골라내야됨)
+        for (let i = 0; i < subs.length; i++) {
+            subs[i].setAttribute("title","제품사진:" + subs[i].getAttribute("title"));
+        }
+    }
+    // testArribute();
+
+    // 초기화 코드 : 페이지가 모두 로드 되었을 때 초기화 이벤트 발생
+
+    // id가 main-image 클릭하면 이벤트 정보 콘솔에 출력
+    document.getElementById("main-image").onclick = function(event) {
+            // 이벤트리스너 콜백 함수에 전달된 첫번째 인자값 -> 이벤트 정보
+            console.log(event);
+            console.log("이벤트 발생 객체:", event.target);
+
+            alert(event.target.title);
+    }
+
+    // 초기화 코드 : 페이지가 모두 로드 되었을 때 초기화 이벤트 발생
+    window.addEventListener("load", function(event) {
+        // 하단의.sub-igame 클릭하면 이미지 주소를 main-image
+        // title 속성 -> main-image, h2 태그로 복사
+        let products = document.getElementsByClassName("sub-image");
+        for (let i = 0; i < products.length; i++) {
+            // 개별 프로덕트
+            let product = products[i];
+            console.log(product);
+
+            // 이벤트 부착
+            product.addEventListener("click", (event) => {
+                // 이벤트 발생 객채
+
+                let obj = event.target;
+                // #main-image 찾기
+                let mainImage = document.getElementById("main-image");
+                mainImage.setAttribute("title", obj.getAttribute("title"));
+                mainImage.setAttribute("src", obj.getAttribute("src"));
+                // title 속성 -> h2
+                let h2 = document.querySelector("#product-info h2");
+                h2.innerText = obj.getAttribute("title");
+                // .innerText -> 콘텐츠 변경 (text)
+                // .innerHTML -> 콘텐츠 변경 (HTML)
+            })
+        }
+    })
+    // input#Ketword의 내용이 변하면 button#btn-search의 value 속성으로 복사
+     document.getElementById("keyword").addEventListener("keyup", (event) => {
+        console.log(event);
+        let btn = document.querySelector("#btn-search");
+        btn.innerText = event.target.value + ":검색";
+     });
+
+
+</script>
+</html>

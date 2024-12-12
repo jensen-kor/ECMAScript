@@ -160,8 +160,16 @@ function testDataPipeline() {
 // testDataPipeline();
 
 console.log(
-    "데이터 파이프라인 구축:", data.map(student => ({...student, total: student.kor + student.eng + student.math})
-.filter(student => student.total >= 240)
-.sort((a,b) => b.total -a.total)
-.reduce((acc, student) => acc + student.total), 0) / 3)
-;
+    "데이터 파이프라인 구축:",
+    data
+        .map(student => ({
+            ...student,
+            total: student.kor + 
+                    student.eng + 
+                    student.math
+        }))
+        .filter(student => student.total >= 240)
+        .sort((a, b) => b.total - a.total)
+        .reduce((acc, student) => 
+            acc + student.total, 0) / 3
+    );
